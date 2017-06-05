@@ -20,7 +20,7 @@ click==6.7
 cloudpickle==0.2.2
 
 colorama==0.3.7
-comtypes==1.1.2
+
 conda==4.3.14
 configobj==5.0.6
 contextlib2==0.5.4
