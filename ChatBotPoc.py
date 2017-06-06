@@ -83,7 +83,7 @@ class CrmnextChatBot:
     Step = "step2"
 
     # Bot running form this point
-    def run_bot(self, saying, reConnect):
+    def run_bot(self, saying, reConnect, contactNumber):
         if reConnect is True:
             self.isCardStolen = False
             self.isLoanNeeded = False
@@ -96,7 +96,7 @@ class CrmnextChatBot:
         # else:
         if self.isCardStolen:
             if self.Step == "step2":
-                self.Contact_Number = "8882874659" #contactNumber
+                self.Contact_Number = contactNumber
                 dob = "11/11/1111" #dob_user
                 self.Step = "step3"
                 return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[6:10]
@@ -129,7 +129,7 @@ class CrmnextChatBot:
     # # Method for sentiment analysis
     # def Sent_Analysis(self, text):
     #     blob = TextBlob(text)
-    # 
+    #
     #     for sentence in blob.sentences:
     #         polarity = sentence.sentiment.polarity
     #         print(polarity)
