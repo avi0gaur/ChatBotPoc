@@ -11,17 +11,10 @@ app.debug = True
 
 CORS(app)
 
-<<<<<<< HEAD
-@app.route('/')
-def mainpage():
-    return render_template('index.html')
-    
-=======
 
 @app.route('/')
 def mainpage():
     return render_template('index.html')
->>>>>>> b5c8eedefe7c1be23962b2a3c55e01539420b58f
 
 @app.route('/request', methods=['POST'])
 def post_reponse():
