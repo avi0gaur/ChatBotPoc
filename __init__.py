@@ -11,13 +11,10 @@ app.debug = True
 
 CORS(app)
 
-# define for IIS module registration.
-wsgi_app = app.wsgi_app
-
-@app.route('/', methods=['GET'])
-def mainpage():  # pragma: no cover
-    content = get_file('index.html')
-    return Response(content, mimetype="text/html")
+@app.route('/')
+def mainpage():
+    return render_template('index.html')
+    
 
 @app.route('/request', methods=['POST'])
 def post_reponse():
