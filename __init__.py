@@ -11,12 +11,17 @@ app.debug = True
 
 CORS(app)
 
+app = Flask(__name__, static_url_path='')
+
+app.debug = True
+
+CORS(app)
 
 @app.route('/')
-def mainpage():
-    return render_template('index.html')
+def root():
+    return app.send_static_file('index.html')
 
-@app.route('/request', methods=['POST'])
+@app.route('/chatbot/request', methods=['POST'])
 def post_reponse():
 
     isRe_Connect = request.json['re_connect']
@@ -198,7 +203,7 @@ def post_reponse():
     else:
         result = {
             "type": "text",
-            "message": message,
+            "message":content,
             "senderId": "1234"
         }
 
