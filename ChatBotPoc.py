@@ -89,58 +89,55 @@ class CrmnextChatBot:
             self.isLoanNeeded = False
         response = "Please be more specific."
         last_four_number = 6547
-#         polarity = self.Sent_Analysis(saying)
-#         print(polarity)
-#         if polarity == "neg":
-#             response = "Sorry ! do you want me to redirect you to our CSR."
- #       else:
-            if self.isCardStolen:
-                if self.Step == "step2":
-                    self.Contact_Number = "8882874659" #contactNumber
-                    #regex = re.compile(r'^[789]\d{9}$')
-                    #bool_validate = re.match(regex, self.Contact_Number)
-
-                    dob = "11/11/1111" #dob_user
-                    self.Step = "step3"
-                    return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[6:10]
-                elif self.Step == "step3":
-                    if saying == "8459":
-                        self.Step = "step4"
-                        return "Hi Anjan, I can see two cards registered with your account, which one you want to block?"
-                    else:
-                        return "OTP is not correct"
-                elif self.Step == "step4" and saying.lower() == "both":
+        # polarity = self.Sent_Analysis(saying)
+        # print(polarity)
+        # if polarity == "neg":
+        #     response = "Sorry ! do you want me to redirect you to our CSR."
+        # else:
+        if self.isCardStolen:
+            if self.Step == "step2":
+                self.Contact_Number = "8882874659" #contactNumber
+                dob = "11/11/1111" #dob_user
+                self.Step = "step3"
+                return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[6:10]
+            elif self.Step == "step3":
+                if saying == "8459":
+                    self.Step = "step4"
+                    return "Hi Anjan, I can see two cards registered with your account, which one you want to block?"
+                else:
+                    return "OTP is not correct"
+            elif self.Step == "step4" and saying.lower() == "both":
                     self.Step = "step5"
                     return "Do you wish to report any fraud transactions"
-                elif self.Step == "step5" and saying.lower() == "no":
+            elif self.Step == "step5" and saying.lower() == "no":
                     self.Step = "step6"
                     return "Sure, your credit card ending 5694 and debit card ending 7654, has been successfully blocked. while replacing do you want to upgrade your card?"
-                elif self.Step == "step6" and saying.lower() == "yes":
+            elif self.Step == "step6" and saying.lower() == "yes":
                     self.Step = "step7"
                     return "Certainly your new international visa credit card and titanium debit card will be delivered by next week. Is there any thing else ?"
-                elif self.Step == "step7" and saying.lower() == "no" or saying.lower() == "no thanks":
+            elif self.Step == "step7" and saying.lower() == "no" or saying.lower() == "no thanks":
                     return "#re_issue_card_status"
-                else:
-                    return "Please be specific"
-            elif self.isLoanNeeded:
-               response = self.run_bot_Loan(saying)
             else:
-                response = self.crmNextChatter(saying)
-                print(self.isCardStolen)
+                return "Please be specific"
+        elif self.isLoanNeeded:
+               response = self.run_bot_Loan(saying)
+        else:
+            response = self.crmNextChatter(saying)
+            print(self.isCardStolen)
         return response
 
-    # Method for sentiment analysis
-#     def Sent_Analysis(self, text):
-#         blob = TextBlob(text)
-
-#         for sentence in blob.sentences:
-#             polarity = sentence.sentiment.polarity
-#             print(polarity)
-#             if polarity > -0.2:
-#                 sent = "pos"
-#             else:
-#                 sent = "neg"
-#             return sent
+    # # Method for sentiment analysis
+    # def Sent_Analysis(self, text):
+    #     blob = TextBlob(text)
+    # 
+    #     for sentence in blob.sentences:
+    #         polarity = sentence.sentiment.polarity
+    #         print(polarity)
+    #         if polarity > -0.2:
+    #             sent = "pos"
+    #         else:
+    #             sent = "neg"
+    #         return sent
 
 
 
