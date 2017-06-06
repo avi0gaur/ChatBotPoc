@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from ChatBotPoc import CrmnextChatBot
 from flask_cors import CORS, cross_origin
