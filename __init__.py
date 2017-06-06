@@ -15,7 +15,7 @@ CORS(app)
 wsgi_app = app.wsgi_app
 
 @app.route('/', methods=['GET'])
-def main+_page():  # pragma: no cover
+def mainpage():  # pragma: no cover
     content = get_file('index.html')
     return Response(content, mimetype="text/html")
 
