@@ -1,16 +1,16 @@
-    ## Chat bot for crmnext.
-## **** Avinash Gaur ****
+## Chat bot for crmnext.
+## **** Avinash Gaur and Sachin Arora ****
 import random
 from textblob import TextBlob
-import json
-import re
-
 
 
 class CrmnextChatBot:
-    isCardStolen = False
 
-    #Variables for User data
+    #Boolean variables for context decisions
+    isCardStolen = False
+    isLoanNeeded = False
+
+    # Variables for User data
     card_style = None
     Message = None
     UserId = None
@@ -35,18 +35,19 @@ class CrmnextChatBot:
     # Filter Context for card stolen
     CARD_STOLEN_CONTEXT = ["block", "lost"]
 
-    CARD_STOLEN_RESPONSE = ["Sorry to hear that,please tell me your mobile number to proceed?"]
+    #Filter for loan context
+
+    LOAN_CONTEXT = ["loan", "money", "personal"]
+
+    #Loan Context form
+    LOAN_RESPONSE = ["#show_form_loan"]
+
+    CARD_STOLEN_RESPONSE = ["#show_form"]
+
+    CARD_ACTION_FORM = ["#showactions"]
 
     def __init__(self):
         self.data = []
-
-    def check_for_greeting(self, sentence):
-        """If any of the words in the user's input was a greeting, return a greeting response"""
-        for word in sentence.split():
-            if word.lower() in self.GREETING_KEYWORDS:
-                return random.choice(self.GREETING_RESPONSES)
-            else:
-                return "please be specific"
 
     def card_block(self, sentence):
         # if the intent is related to card.
@@ -61,46 +62,31 @@ class CrmnextChatBot:
         if context == "CARD_STOLEN":
             resp = random.choice(self.CARD_STOLEN_RESPONSE)
             self.isCardStolen = True
+        elif context == "APPLY_LOAN":
+            resp = random.choice(self.LOAN_RESPONSE)
+            self.isLoanNeeded = True
         return resp
 
-    def user_auth(self):
-        #self.Contact_Number = input()
-        print("Please provide OTP, for user Authentication")
-        otp = input()
-        print("Hi " + self.AccHolder)
-        print("do you want to block your account : xx5404")
-        agreeAccBlock = input()
-        if agreeAccBlock.lower() == "yes":
-            print("Your card has been blocked")
-        print("Would you like to raise new card request?")
-        newCardRqst = input()
-        if newCardRqst.lower() == "yes":
-            print("Awesome ! your new card will be delivered on your registered address")
-
-        print("Do you need any other help ?")
-
-        newContextRaise = input()
-        if newContextRaise.len() > 1:
-            print(self.crmNextChatter(newContextRaise))
-        elif newContextRaise.lower() == "no":
-            print("Have a nice day Avinash")
 
     def contextFinder(self, sentence):
         context = "NA"
         for word in sentence.split():
             if word.lower() in self.CARD_CONTEXT:
                 context = "CARD_STOLEN"
-            elif word.lower() in self.CHECK_BOOK_CONTEXT:
-                context = "CHECK_BOOK_REQUEST"
+            elif word.lower() in self.LOAN_CONTEXT:
+                context = "APPLY_LOAN"
         return context
 
     def crmNextChatter(self, saying):
         return self.respond(saying)
 
-    Step = "step1"
+    Step = "step2"
+
+    # Bot running form this point
     def run_bot(self, saying, reConnect):
         if reConnect is True:
             self.isCardStolen = False
+            self.isLoanNeeded = False
         response = "Please be more specific."
         last_four_number = 6547
         polarity = self.Sent_Analysis(saying)
@@ -109,19 +95,14 @@ class CrmnextChatBot:
             response = "Sorry ! do you want me to redirect you to our CSR."
         else:
             if self.isCardStolen:
-                if self.Step == "step1":
-                    self.Contact_Number = saying
-                    regex = re.compile(r'^[789]\d{9}$')
-                    bool_validate = re.match(regex, self.Contact_Number)
-                    if bool_validate is None:
-                        return "Please enter a valid number"
-                    else:
-                        self.Step = "step2"
-                        return"Please tell me your Date Of Birth (dd/mm/yyyy)"
-                elif self.Step == "step2":
-                    dob = saying
+                if self.Step == "step2":
+                    self.Contact_Number = "8882874659" #contactNumber
+                    #regex = re.compile(r'^[789]\d{9}$')
+                    #bool_validate = re.match(regex, self.Contact_Number)
+
+                    dob = "11/11/1111" #dob_user
                     self.Step = "step3"
-                    return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[5:9]
+                    return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[6:10]
                 elif self.Step == "step3":
                     if saying == "8459":
                         self.Step = "step4"
@@ -131,16 +112,18 @@ class CrmnextChatBot:
                 elif self.Step == "step4" and saying.lower() == "both":
                     self.Step = "step5"
                     return "Do you wish to report any fraud transactions"
-                elif  self.Step == "step5" and saying.lower() == "no" :
+                elif self.Step == "step5" and saying.lower() == "no":
                     self.Step = "step6"
                     return "Sure, your credit card ending 5694 and debit card ending 7654, has been successfully blocked. while replacing do you want to upgrade your card?"
                 elif self.Step == "step6" and saying.lower() == "yes":
                     self.Step = "step7"
                     return "Certainly your new international visa credit card and titanium debit card will be delivered by next week. Is there any thing else ?"
                 elif self.Step == "step7" and saying.lower() == "no" or saying.lower() == "no thanks":
-                    return "Thanks for banking with us have a nice day ! Anjan."
+                    return "#re_issue_card_status"
                 else:
                     return "Please be specific"
+            elif self.isLoanNeeded:
+               response = self.run_bot_Loan(saying)
             else:
                 response = self.crmNextChatter(saying)
                 print(self.isCardStolen)
@@ -158,40 +141,21 @@ class CrmnextChatBot:
             else:
                 sent = "neg"
             return sent
-    # Method to create Json object
-
-    def json_create(self, card_style, Message, UserId, Sentiment, Name, Contact_Number, Pan_Number, Aadhaar_number):
-
-        json_sentiment = json.dumps({"Card_Style": card_style,
-                                         "User_Input": {"Message": Message, "User_Id": UserId, "Sentiment": Sentiment},
-                                         "User_Details": {"Name": Name, "Contact_Number": Contact_Number,
-                                                          "PAN_Number": Pan_Number, "Aadhaar_Number": Aadhaar_number}})
-
-        return (json_sentiment)
 
 
-            # def main():
-    #   # Bot starts from here
-    #   # Check for greeting words
-    #   while True:
-    #       clientResponse = input()
-    #       if clientResponse == "quit":
-    #           break
-    #       #response = check_for_greeting(clientResponse)
-    #       response =  card_block(clientResponse)
 
-    #       print(response)
+    # Loan Journey
 
+    step_loan = "step1"
+    def run_bot_Loan(self, saying):
 
-    # if __name__ == '__main__':
-    #
-    #     print("Hi ! How can i make your life easy.")
-    #     while True:
-    #         saying = input()
-    #
-    #         if saying == "quit":
-    #             break
-    #         if isCardStolen:
-    #             user_auth()
-    #         else:
-    #             print(crmNextChatter(saying))
+        if self.step_loan == "step1":
+            self.step_loan = "step2"
+            return "#offer_loan_cards"
+        elif self.step_loan == "step2":
+            self.step_loan = "step3"
+            return "Awesome choice, Please Authorize us to do a CIBIL check to process your Loan"
+        elif self.step_loan == "step3" and saying.lower() == "yes":
+            return "#cibil_check"
+        else:
+            return "Please be specific"
