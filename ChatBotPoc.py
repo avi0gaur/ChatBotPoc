@@ -1,7 +1,7 @@
 ## Chat bot for crmnext.
 ## **** Avinash Gaur and Sachin Arora ****
 import random
-from textblob import TextBlob
+# from textblob import TextBlob
 
 
 class CrmnextChatBot:
@@ -89,10 +89,10 @@ class CrmnextChatBot:
             self.isLoanNeeded = False
         response = "Please be more specific."
         last_four_number = 6547
-        polarity = self.Sent_Analysis(saying)
-        print(polarity)
-        if polarity == "neg":
-            response = "Sorry ! do you want me to redirect you to our CSR."
+#         polarity = self.Sent_Analysis(saying)
+#         print(polarity)
+#         if polarity == "neg":
+#             response = "Sorry ! do you want me to redirect you to our CSR."
         else:
             if self.isCardStolen:
                 if self.Step == "step2":
@@ -130,17 +130,17 @@ class CrmnextChatBot:
         return response
 
     # Method for sentiment analysis
-    def Sent_Analysis(self, text):
-        blob = TextBlob(text)
+#     def Sent_Analysis(self, text):
+#         blob = TextBlob(text)
 
-        for sentence in blob.sentences:
-            polarity = sentence.sentiment.polarity
-            print(polarity)
-            if polarity > -0.2:
-                sent = "pos"
-            else:
-                sent = "neg"
-            return sent
+#         for sentence in blob.sentences:
+#             polarity = sentence.sentiment.polarity
+#             print(polarity)
+#             if polarity > -0.2:
+#                 sent = "pos"
+#             else:
+#                 sent = "neg"
+#             return sent
 
 
 
