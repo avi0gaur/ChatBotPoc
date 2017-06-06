@@ -93,7 +93,7 @@ class CrmnextChatBot:
 #         print(polarity)
 #         if polarity == "neg":
 #             response = "Sorry ! do you want me to redirect you to our CSR."
-        else:
+ #       else:
             if self.isCardStolen:
                 if self.Step == "step2":
                     self.Contact_Number = "8882874659" #contactNumber
