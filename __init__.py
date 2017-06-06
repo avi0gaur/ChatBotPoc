@@ -12,9 +12,9 @@ app.debug = True
 CORS(app)
 
 
-@app.route('/', methods=['GET'])
-def mainpage():  # pragma: no cover
-    return app.send_static_file('index.html')
+@app.route('/')
+def mainpage():
+    return render_template('index.html')
 
 @app.route('/request', methods=['POST'])
 def post_reponse():
