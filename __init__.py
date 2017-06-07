@@ -1,15 +1,9 @@
 import os
-from flask import Flask, request, jsonify,render_template
+from flask import Flask, request, jsonify
 from ChatBotPoc import CrmnextChatBot
 from flask_cors import CORS, cross_origin
 
 bot = CrmnextChatBot()
-
-app = Flask(__name__)
-
-app.debug = True
-
-CORS(app)
 
 app = Flask(__name__, static_url_path='')
 
@@ -17,25 +11,29 @@ app.debug = True
 
 CORS(app)
 
+# define for IIS module registration.
+wsgi_app = app.wsgi_app
+
+
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
 
+
 @app.route('/chatbot/request', methods=['POST'])
 def post_reponse():
-
     isRe_Connect = request.json['re_connect']
     content = request.json['message']
     messageType = request.json['type']
+    contact_number = "8899" #default
     action = "Default"
-    contact_number = "4659"
 
     if messageType == "data":
         data = request.json['data']
         contact_number = data.get('contact_number')
         dob = data.get('dob')
 
-    action = bot.run_bot(content, isRe_Connect,contact_number)
+    action = bot.run_bot(content, isRe_Connect, contact_number)
     result = "No Form"
 
     if action == "#show_form":
@@ -46,23 +44,23 @@ def post_reponse():
                 {
                     "heading": "Please provide your details:",
                     "ok": "OK",
-					"reesponse": "Detials Provided",
+                    "response": "Detials Provided",
                     "fields":
-                    [
-                        {
-                               "name": "dob",
-                            "label": "DOB",
-                            "type": "date"
-                        },
-                        {
-                            "name": "mobile",
-                            "label": "Mobile",
-                            "type": "tel"
-                        }
+                        [
+                            {
+                                "name": "dob",
+                                "label": "DOB",
+                                "type": "date"
+                            },
+                            {
+                                "name": "mobile",
+                                "label": "Mobile",
+                                "type": "tel"
+                            }
 
-                    ]
+                        ]
                 },
-				
+
             "senderId": "1234"
         }
     elif action == "#showactions":
@@ -120,10 +118,10 @@ def post_reponse():
                 "actions": [
                     {
                         "label": "Withdraw",
-						"response": "Withdraw",
+                        "response": "Withdraw",
                     }, {
                         "label": "Escalate",
-						"response": "Escalate",
+                        "response": "Escalate",
                     }
                 ]
             }
@@ -136,7 +134,7 @@ def post_reponse():
             "message": {
                 "heading": "Please provide your details:",
                 "ok": "OK",
-				"response": "loan form submitted",
+                "response": "loan form submitted",
                 "fields": [
                     {
                         "name": "dob",
@@ -171,28 +169,28 @@ def post_reponse():
         result = {
             "type": "batch",
             "message": [
-				{
-					"type": "text",
-					"message": "Thanks, here are some offers for you.",
-					"senderId": "1234"
-				},
-				{
-					"type": "card",
-					"template": "info",
-					"message": "Corporate plus personal loan @ 11% PA",
-					"senderId": "1234"
-				},				{
-					"type": "card",
-					"template": "info",
-					"message": "Super saving loan @ 10.5 PA",
-					"senderId": "1234"
-				},				{
-					"type": "card",
-					"template": "info",
-					"message": "Diamond jubilee plan @ 11.02% PA",
-					"senderId": "1234"
-				}
-			]
+                {
+                    "type": "text",
+                    "message": "Thanks, here are some offers for you.",
+                    "senderId": "1234"
+                },
+                {
+                    "type": "card",
+                    "template": "info",
+                    "message": "Corporate plus personal loan @ 11% PA",
+                    "senderId": "1234"
+                }, {
+                    "type": "card",
+                    "template": "info",
+                    "message": "Super saving loan @ 10.5 PA",
+                    "senderId": "1234"
+                }, {
+                    "type": "card",
+                    "template": "info",
+                    "message": "Diamond jubilee plan @ 11.02% PA",
+                    "senderId": "1234"
+                }
+            ]
         }
     elif action == "#cibil_check":
         result = {
@@ -203,14 +201,13 @@ def post_reponse():
     else:
         result = {
             "type": "text",
-            "message":content,
+            "message": action,
             "senderId": "1234"
         }
 
     return jsonify(result)
 
-
 if __name__ == '__main__':
-     # Bind to PORT if defined, otherwise default to 5000.
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port)
+        #app.run(debug=True)

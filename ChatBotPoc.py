@@ -96,7 +96,7 @@ class CrmnextChatBot:
         # else:
         if self.isCardStolen:
             if self.Step == "step2":
-                self.Contact_Number = contactNumber
+                self.Contact_Number = "9868340227"
                 dob = "11/11/1111" #dob_user
                 self.Step = "step3"
                 return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[6:10]
