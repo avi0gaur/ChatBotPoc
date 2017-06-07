@@ -81,14 +81,13 @@ class CrmnextChatBot:
         return self.respond(saying)
 
     Step = "step2"
-
     # Bot running form this point
     def run_bot(self, saying, reConnect, contactNumber):
         if reConnect is True:
             self.isCardStolen = False
             self.isLoanNeeded = False
-        response = "Please be more specific."
-        last_four_number = 6547
+            self.Step = "step2"
+
         # polarity = self.Sent_Analysis(saying)
         # print(polarity)
         # if polarity == "neg":

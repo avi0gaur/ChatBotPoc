@@ -27,7 +27,7 @@ def post_reponse():
     messageType = request.json['type']
     contact_number = "8899" #default
     action = "Default"
-
+    print("Re-connect value : " + str(isRe_Connect))
     if messageType == "data":
         data = request.json['data']
         contact_number = data.get('contact_number')
@@ -210,4 +210,4 @@ def post_reponse():
 if __name__ == '__main__':
         port = int(os.environ.get('PORT', 5000))
         app.run(host='0.0.0.0', port=port)
-        #app.run(debug=True)
+        # app.run(debug=True)
