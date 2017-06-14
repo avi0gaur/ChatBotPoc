@@ -95,16 +95,13 @@ class CrmnextChatBot:
         # else:
         if self.isCardStolen:
             if self.Step == "step2":
-                self.Contact_Number = "9868340227"
+                self.Contact_Number = "9811160264"
                 dob = "11/11/1111" #dob_user
                 self.Step = "step3"
                 return "Please enter OTP sent on your registered mobile number ending with :" + self.Contact_Number[6:10]
             elif self.Step == "step3":
-                if saying == "8459":
-                    self.Step = "step4"
-                    return "Hi Anjan, I can see two cards registered with your account, which one you want to block?"
-                else:
-                    return "OTP is not correct"
+            	self.Step = "step4"
+            	return "Hi Nishant, I can see two cards registered with your account, which one you want to block?"
             elif self.Step == "step4" and saying.lower() == "both":
                     self.Step = "step5"
                     return "Do you wish to report any fraud transactions"
