@@ -37,7 +37,7 @@ class CrmnextChatBot:
 
     #Filter for loan context
 
-    LOAN_CONTEXT = ["loan", "money", "personal"]
+    LOAN_CONTEXT = ["insurance,","mobile","cell phone","insure"]
 
     #Loan Context form
     LOAN_RESPONSE = ["#show_form_loan"]
